@@ -28,4 +28,8 @@ public class Job {
     private String experience;
 
     private LocalDate postedDate;
+    @ManyToOne
+    @JoinColumn(name = "job_provider_id", nullable = false)
+    private User jobProvider;
+
 }

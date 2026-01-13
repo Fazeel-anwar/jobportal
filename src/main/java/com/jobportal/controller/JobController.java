@@ -1,5 +1,6 @@
 package com.jobportal.controller;
 
+import com.jobportal.dto.JobCreateRequest;
 import com.jobportal.entity.Job;
 import com.jobportal.service.JobService;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,10 @@ public class JobController {
     private final JobService jobService;
 
     @PostMapping
-    public Job createJob(@RequestBody Job job) {
-        return jobService.createJob(job);
+    public Job createJob(@RequestBody JobCreateRequest request) {
+        return jobService.createJob(request);
     }
+
 
     @GetMapping
     public List<Job> getAllJobs() {
