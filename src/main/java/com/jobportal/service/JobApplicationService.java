@@ -19,10 +19,11 @@ public class JobApplicationService {
     private final JobRepository jobRepository;
     private final UserRepository userRepository;
     private final JobApplicationRepository jobApplicationRepository;
+    private final GeminiAiService geminiAiService;
 
 
 
-    public JobApplication apply(Long jobId, Long userId, String resumeUrl) {
+    public JobApplication apply(Long jobId, Long userId, String resumeText, String resumeUrl) {
 
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
@@ -43,7 +44,10 @@ public class JobApplicationService {
         if (jobApplicationRepository.existsByJobIdAndUserId(jobId, userId)) {
             throw new RuntimeException("You already applied for this job");
         }
+        Double score = geminiAiService.scoreResume(resumeText, job.getDescription());
+
         JobApplication application = new JobApplication();
+        application.setAiScore(score);
         application.setJob(job);
         application.setUser(user);
         application.setResumeUrl(resumeUrl);
@@ -64,4 +68,8 @@ public class JobApplicationService {
         app.setStatus(status);
         return jobApplicationRepository.save(app);
     }
+    public List<JobApplication> getRankedApplications(Long jobId) {
+        return jobApplicationRepository.findByJobIdOrderByAiScoreDesc(jobId);
+    }
+
 }

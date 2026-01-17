@@ -25,8 +25,11 @@ public class JobApplication {
     private User user;
 
     private String resumeUrl;
+    @Column(columnDefinition = "TEXT")
+    private String resumeText;
 
     private String status;
 
     private LocalDateTime appliedAt = LocalDateTime.now();
+    private Double aiScore;
 }

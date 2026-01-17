@@ -21,8 +21,9 @@ public class JobApplicationController {
         Long jobId = Long.valueOf(req.get("jobId"));
         Long userId = Long.valueOf(req.get("userId"));
         String resumeUrl = req.get("resumeUrl");
+        String resumeText = req.get("resumeText");
 
-        return ResponseEntity.ok(service.apply(jobId, userId, resumeUrl));
+        return ResponseEntity.ok(service.apply(jobId, userId, resumeText,resumeUrl));
     }
     @GetMapping("/job/{jobId}")
     public ResponseEntity<?> getByJob(@PathVariable Long jobId) {
@@ -36,4 +37,9 @@ public class JobApplicationController {
 
         return ResponseEntity.ok(service.updateStatus(id, status));
     }
+    @GetMapping("/job/{jobId}/ranked")
+    public ResponseEntity<?> getRanked(@PathVariable Long jobId) {
+        return ResponseEntity.ok(service.getRankedApplications(jobId));
+    }
+
 }
